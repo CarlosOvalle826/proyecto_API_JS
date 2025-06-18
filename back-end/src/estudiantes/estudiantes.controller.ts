@@ -4,17 +4,8 @@ import { Estudiante } from './schemas/estudiante.schema';
 import { Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { userInfo } from 'node:os';
-@Controller('estudiantes')
-class CreateEstudianteDTO {
-    nombreAlumno: string;
-    fechaNacimiento: Date;
-    nombrePadre: string;
-    nombreMadre: string;
-    gradoAcademico: string;
-    seccion: string;
-    fechaIngreso?: Date;
-}
-@Controller('api')
+import { CreateEstudianteDTO } from './dto/create-estudiante.dto';
+@Controller()
 export class EstudiantesController {
     constructor(private readonly estudiantesService: EstudiantesService) {}
     //endpoint para crear alumno, ruta: POST /api/crear-alumno
