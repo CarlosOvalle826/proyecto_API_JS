@@ -1,0 +1,130 @@
+<div class="container mt-4">
+  <h1 class="mb-4">{{ title }}</h1>
+
+  <div *ngIf="message" class="alert alert-success" role="alert">
+    {{ message }}
+  </div>
+  <div *ngIf="error" class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+
+  <section class="mb-5 card p-4">
+    <h2 class="card-title">Crear Nuevo Alumno</h2>
+    <form (ngSubmit)="onCreateSubmit()">
+      <div class="mb-3">
+        <label for="nombreAlumno" class="form-label">Nombre del Alumno:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="nombreAlumno"
+          name="nombreAlumno"
+          [(ngModel)]="newEstudiante.nombreAlumno"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento:</label>
+        <input
+          type="date"
+          class="form-control"
+          id="fechaNacimiento"
+          name="fechaNacimiento"
+          [(ngModel)]="newEstudiante.fechaNacimiento"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label for="nombrePadre" class="form-label">Nombre del Padre:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="nombrePadre"
+          name="nombrePadre"
+          [(ngModel)]="newEstudiante.nombrePadre"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label for="nombreMadre" class="form-label">Nombre de la Madre:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="nombreMadre"
+          name="nombreMadre"
+          [(ngModel)]="newEstudiante.nombreMadre"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label for="gradoAcademico" class="form-label">Grado Académico:</label>
+        <select
+          class="form-select"
+          id="gradoAcademico"
+          name="gradoAcademico"
+          [(ngModel)]="newEstudiante.gradoAcademico"
+          required
+        >
+          <option *ngFor="let grado of gradosDisponibles" [value]="grado">
+            {{ grado }}
+          </option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="seccion" class="form-label">Sección:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="seccion"
+          name="seccion"
+          [(ngModel)]="newEstudiante.seccion"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label for="fechaIngreso" class="form-label">Fecha de Ingreso (opcional):</label>
+        <input
+          type="date"
+          class="form-control"
+          id="fechaIngreso"
+          name="fechaIngreso"
+          [(ngModel)]="newEstudiante.fechaIngreso"
+        />
+      </div>
+      <button type="submit" class="btn btn-primary">Crear Alumno</button>
+    </form>
+  </section>
+
+  <section class="card p-4">
+    <h2 class="card-title">Consultar Alumnos por Grado</h2>
+    <div class="mb-3">
+      <label for="gradoBuscar" class="form-label">Seleccionar Grado:</label>
+      <select
+        class="form-select"
+        id="gradoBuscar"
+        name="gradoBuscar"
+        [(ngModel)]="gradoBuscar"
+        (change)="fetchEstudiantesByGrado()"
+      >
+        <option *ngFor="let grado of gradosDisponibles" [value]="grado">
+          {{ grado }}
+        </option>
+      </select>
+    </div>
+    <div *ngIf="estudiantes.length > 0" class="mt-3">
+      <h3>Resultados para el grado {{ gradoBuscar }}:</h3>
+      <ul class="list-group">
+        <li *ngFor="let est of estudiantes" class="list-group-item">
+          <strong>{{ est.nombreAlumno }}</strong> - Grado: {{ est.gradoAcademico }}, Sección: {{ est.seccion }}
+          <br />
+          Fecha Nacimiento: {{ est.fechaNacimiento | date:'shortDate' }}
+          <ng-container *ngIf="est.fechaIngreso">
+            , Fecha Ingreso: {{ est.fechaIngreso | date:'shortDate' }}
+          </ng-container>
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="estudiantes.length === 0 && !error && message && gradoBuscar" class="mt-3">
+        <p>{{ message }}</p>
+    </div>
+  </section>
+</div>

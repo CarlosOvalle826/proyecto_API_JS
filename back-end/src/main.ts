@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe} from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
@@ -10,16 +10,21 @@ async function bootstrap() {
     forbidNonWhitelisted: true, // Lanza un error si hay propiedades no definidas en el DTO
     transform: true, // Transforma los payloads a instancias de clase DTO
     transformOptions: {
-        enableImplicitConversion: true // Permite la conversión implícita de tipos
+      enableImplicitConversion: true // Permite la conversión implícita de tipos
     }
   }));
+  app.enableCors({
+    origin: 'http://localhost:4200', // <-- ¡IMPORTANTE! Permite solicitudes desde tu frontend Angular
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Métodos HTTP permitidos
+    credentials: true, // Permite que se envíen credenciales 
+  });
   app.setGlobalPrefix('api');
-  const config= new DocumentBuilder()
-  .setTitle('API de Gestión de Estudiantes')
+  const config = new DocumentBuilder()
+    .setTitle('API de Gestión de Estudiantes')
     .setDescription('Documentación de API para gestionar información de estudiantes')
     .setVersion('1.0')
     .addTag('Estudiantes', 'Operaciones relacionadas con estudiantes')
-    .addBasicAuth({ 
+    .addBasicAuth({
       type: 'http',
       scheme: 'basic',
       description: 'Autenticación básica usando nombre de usuario y contraseña',
