@@ -6,7 +6,7 @@ export class Estudiante{
     @Prop({required: true})
     nombreAlumno: string;
     @Prop({required: true})
-    fechaNacimineto: Date;
+    fechaNacimiento: Date;
     @Prop({required: true})
     nombrePadre: string;
     @Prop({required: true})
